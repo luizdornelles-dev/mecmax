@@ -7,43 +7,139 @@ import { alertaSucesso, alertaErro, confirmarAcao } from "../utils/alertas";
 
 function formatarDataHora(valor) {
   if (!valor) return "-";
+
   const d = new Date(valor);
+
   if (Number.isNaN(d.getTime())) return "-";
-  return d.toLocaleString('pt-BR', { 
-    day: '2-digit', month: '2-digit', year: 'numeric', 
-    hour: '2-digit', minute: '2-digit' 
+
+  return d.toLocaleString("pt-BR", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit"
   });
+}
+
+function normalizarStatus(ferramenta) {
+  const statusTexto = String(
+    ferramenta.status ||
+      ferramenta.status_ferramenta ||
+      ferramenta.nome_status ||
+      ""
+  )
+    .toUpperCase()
+    .trim();
+
+  const idStatus = Number(ferramenta.id_status);
+
+  if (idStatus === 1 || statusTexto.includes("DISPON")) {
+    return "DISPONIVEL";
+  }
+
+  if (idStatus === 2 || statusTexto.includes("EMPREST")) {
+    return "EMPRESTADA";
+  }
+
+  if (
+    idStatus === 3 ||
+    statusTexto.includes("MANUT") ||
+    statusTexto.includes("EM_MANUTENCAO")
+  ) {
+    return "EM_MANUTENCAO";
+  }
+
+  if (idStatus === 4 || statusTexto.includes("ATRAS")) {
+    return "ATRASADO";
+  }
+
+  if (idStatus === 5 || statusTexto.includes("INAT")) {
+    return "INATIVA";
+  }
+
+  return statusTexto || "DESCONHECIDO";
+}
+
+function obterStatusVisual(status) {
+  switch (status) {
+    case "DISPONIVEL":
+      return {
+        texto: "🟢 DISPONÍVEL",
+        cor: "#4caf50"
+      };
+
+    case "EMPRESTADA":
+      return {
+        texto: "🟠 EMPRESTADA",
+        cor: "#ff9800"
+      };
+
+    case "EM_MANUTENCAO":
+      return {
+        texto: "🔴 MANUTENÇÃO",
+        cor: "#f44336"
+      };
+
+    case "ATRASADO":
+      return {
+        texto: "⚠️ ATRASADA",
+        cor: "#ffc400"
+      };
+
+    case "INATIVA":
+      return {
+        texto: "⚫ INATIVA",
+        cor: "#9e9e9e"
+      };
+
+    default:
+      return {
+        texto: status || "DESCONHECIDO",
+        cor: "#ccc"
+      };
+  }
 }
 
 function ConsultaFerramentas() {
   const [ferramentas, setFerramentas] = useState([]);
   const [carregando, setCarregando] = useState(true);
+
   const navigate = useNavigate();
-  
-  const mecanicoLogado = JSON.parse(sessionStorage.getItem("mecanicoLogado") || "null");
+
+  const mecanicoLogado = JSON.parse(
+    sessionStorage.getItem("mecanicoLogado") || "null"
+  );
 
   useEffect(() => {
     async function carregar() {
       try {
         setCarregando(true);
+
         const resp = await api.get("/ferramentas/completo");
+
         setFerramentas(resp.data?.data || []);
       } catch (e) {
-        console.error("Erro", e);
+        console.error("Erro ao carregar ferramentas:", e);
         alertaErro("Erro ao carregar o acervo de ferramentas.");
       } finally {
         setCarregando(false);
       }
     }
+
     carregar();
   }, []);
 
   async function handleDevolver(idEmprestimo) {
-    const confirmado = await confirmarAcao("Deseja confirmar a devolução desta ferramenta?", "Sim, Devolver");
+    const confirmado = await confirmarAcao(
+      "Deseja confirmar a devolução desta ferramenta?",
+      "Sim, Devolver"
+    );
+
     if (!confirmado) return;
 
     try {
       const resp = await api.put(`/emprestimos/${idEmprestimo}/devolver`);
+
       if (resp.data.success) {
         alertaSucesso("Devolução registrada com sucesso!");
         setTimeout(() => window.location.reload(), 1500);
@@ -51,6 +147,7 @@ function ConsultaFerramentas() {
         alertaErro(resp.data.message);
       }
     } catch (e) {
+      console.error("Erro ao devolver ferramenta:", e);
       alertaErro("Erro ao processar devolução.");
     }
   }
@@ -59,7 +156,7 @@ function ConsultaFerramentas() {
     <div className="pagina-mecanico">
       <div className="container-mecanico">
         <h2 className="titulo">Consulta e Movimentação de Ferramentas</h2>
-        
+
         <div className="tabela-container">
           {carregando ? (
             <p style={{ color: "#fff" }}>Carregando ferramentas...</p>
@@ -78,48 +175,71 @@ function ConsultaFerramentas() {
                   <th>Ações</th>
                 </tr>
               </thead>
+
               <tbody>
                 {ferramentas.map((f) => {
-                  const status = f.status;
-                  const idMecanicoEmprestou = f.id_mecanico_emprestimo || f.id_mecanico;
-                  const isDono = mecanicoLogado && String(idMecanicoEmprestou) === String(mecanicoLogado.id_mecanico);
-                  const isEmprestada = status === "EMPRESTADA" || status === "ATRASADO";
+                  const status = normalizarStatus(f);
+                  const statusVisual = obterStatusVisual(status);
+
+                  const idMecanicoEmprestou =
+                    f.id_mecanico_emprestimo || f.id_mecanico;
+
+                  const isDono =
+                    mecanicoLogado &&
+                    String(idMecanicoEmprestou) ===
+                      String(mecanicoLogado.id_mecanico);
+
+                  const isEmprestada =
+                    status === "EMPRESTADA" || status === "ATRASADO";
+
+                  const podeReservar =
+                    status === "DISPONIVEL" || isEmprestada;
 
                   return (
                     <tr key={f.id_ferramenta}>
                       <td data-label="Cód">{f.codigo_ferramenta}</td>
-                      <td data-label="Ferramenta">{f.nome_ferramenta}</td>
+
+                      <td data-label="Ferramenta">
+                        {f.nome_ferramenta}
+                      </td>
+
                       <td data-label="Marca">{f.marca || "-"}</td>
-                      <td data-label="Categoria">{f.nome_categoria || "-"}</td>
-                      
+
+                      <td data-label="Categoria">
+                        {f.nome_categoria || "-"}
+                      </td>
+
                       <td data-label="Status" style={{ fontWeight: "bold" }}>
                         <div
                           className="status-container"
                           style={{
-                            color: status === "DISPONIVEL"
-                              ? "#4caf50"
-                              : isEmprestada
-                              ? "#ff9800"
-                              : "#f44336"
+                            color: statusVisual.cor
                           }}
                         >
-                          {status === "DISPONIVEL" && "🟢 DISPONÍVEL"}
-                          {status === "EMPRESTADA" && "🟠 EMPRESTADA"}
-                          {status === "EM_MANUTENCAO" && "🔴 MANUTENÇÃO"}
-                          {status === "ATRASADO" && "⚠️ ATRASADA"}
+                          {statusVisual.texto}
                         </div>
                       </td>
-                      
-                      <td data-label="Local de Uso">{f.local_uso || "-"}</td>
-                      <td data-label="Responsável">{f.mecanico || "-"}</td>
-                      <td data-label="Prev. Devolução">{isEmprestada ? formatarDataHora(f.previsao) : "-"}</td>
+
+                      <td data-label="Local de Uso">
+                        {f.local_uso || "-"}
+                      </td>
+
+                      <td data-label="Responsável">
+                        {f.mecanico || "-"}
+                      </td>
+
+                      <td data-label="Prev. Devolução">
+                        {isEmprestada ? formatarDataHora(f.previsao) : "-"}
+                      </td>
 
                       <td data-label="Ações" className="celula-acoes">
                         <div className="acoes">
                           {status === "DISPONIVEL" && (
                             <button
                               className="btn emprestar"
-                              onClick={() => navigate(`/emprestar/${f.codigo_ferramenta}`)}
+                              onClick={() =>
+                                navigate(`/emprestar/${f.codigo_ferramenta}`)
+                              }
                             >
                               Emprestar
                             </button>
@@ -129,25 +249,32 @@ function ConsultaFerramentas() {
                             <>
                               <button
                                 className="btn editar"
-                                onClick={() => navigate(`/editar/${f.id_emprestimo}`)}
+                                onClick={() =>
+                                  navigate(`/editar/${f.id_emprestimo}`)
+                                }
                               >
                                 Editar
                               </button>
+
                               <button
                                 className="btn devolver"
-                                onClick={() => handleDevolver(f.id_emprestimo)}
+                                onClick={() =>
+                                  handleDevolver(f.id_emprestimo)
+                                }
                               >
                                 Devolver
                               </button>
                             </>
                           )}
 
-                          {(status === "DISPONIVEL" || isEmprestada) && (
+                          {podeReservar && (
                             <button
                               className="btn reservar"
                               onClick={() =>
                                 navigate("/nova-reserva", {
-                                  state: { codigo_ferramenta: f.codigo_ferramenta }
+                                  state: {
+                                    codigo_ferramenta: f.codigo_ferramenta
+                                  }
                                 })
                               }
                             >
@@ -156,8 +283,26 @@ function ConsultaFerramentas() {
                           )}
 
                           {status === "EM_MANUTENCAO" && (
-                            <span style={{ color: "#888", fontSize: "12px", fontStyle: "italic" }}>
+                            <span
+                              style={{
+                                color: "#888",
+                                fontSize: "12px",
+                                fontStyle: "italic"
+                              }}
+                            >
                               Item em Manutenção
+                            </span>
+                          )}
+
+                          {status === "INATIVA" && (
+                            <span
+                              style={{
+                                color: "#888",
+                                fontSize: "12px",
+                                fontStyle: "italic"
+                              }}
+                            >
+                              Item Inativo
                             </span>
                           )}
                         </div>
