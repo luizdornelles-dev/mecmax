@@ -397,29 +397,13 @@ PUT /api/localizacoes/:id
 DELETE /api/localizacoes/:id
 ```
 
+## 16. Repositório do Projeto
+
 ---
 
 ## 15. Deploy em Nuvem
 
-> ⚠️ **PENDÊNCIA ANTES DA ENTREGA DA AV4**
->
-> Inserir aqui o link público do sistema publicado em nuvem após o deploy.
->
-> Este link deve ser testado em uma guia anônima antes do envio no AVA.
-
-### 🔗 Link do Sistema em Nuvem
-
-PENDENTE: inserir aqui o link do sistema após o deploy.
-
----
-
-## 16. Repositório do Projeto
-
-> ⚠️ **PENDÊNCIA ANTES DA ENTREGA DA AV4**
->
-> Inserir aqui o link público do repositório oficial no GitHub.
->
-> O link deve ser testado em uma guia anônima para confirmar que está acessível ao professor.
+http://23.22.130.221
 
 ### 🔗 Link do Repositório GitHub
 
