@@ -1,0 +1,73 @@
+.page-container {
+  color: #eaeaea;
+  background-color: #121212;
+  min-height: 100vh;
+  padding: 20px;
+}
+
+.page-title {
+  font-size: 26px;
+  font-weight: 600;
+  color: #ffffff;
+  margin-bottom: 20px;
+}
+
+.table-container {
+  overflow-x: auto;
+  margin-top: 20px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #1a1a1a;
+}
+
+thead {
+  background-color: #1e1e1e;
+}
+
+thead th {
+  padding: 12px;
+  color: #ffffff;
+  border-bottom: 2px solid #3a3a3a;
+}
+
+tbody tr:nth-child(odd) {
+  background-color: #121212;
+}
+
+tbody tr:nth-child(even) {
+  background-color: #181818;
+}
+
+td {
+  padding: 10px;
+  border-bottom: 1px solid #2c2c2c;
+  color: #eaeaea;
+}
+
+.status-devolvido {
+  color: #5eff8a;
+  font-weight: bold;
+}
+
+.btn-devolver {
+  background-color: #ffc400;
+  color: #000;
+  padding: 6px 14px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.btn-devolver:hover {
+  background-color: #ffdd4d;
+}
+
+.btn-devolver:disabled {
+  background-color: #555;
+  color: #999;
+  cursor: not-allowed;
+}

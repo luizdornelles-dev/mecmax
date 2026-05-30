@@ -1,0 +1,22 @@
+{
+  "name": "mecmax-backend",
+  "version": "1.0.0",
+  "description": "API backend do sistema MecMax - Gestão de Estoque Patrimonial",
+  "main": "src/server.js",
+  "scripts": {
+    "dev": "nodemon src/server.js",
+    "start": "node src/server.js"
+  },
+  "keywords": [],
+  "author": "Theo e Luiz",
+  "license": "MIT",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.0",
+    "express": "^4.19.0",
+    "mysql2": "^3.9.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.11"
+  }
+}

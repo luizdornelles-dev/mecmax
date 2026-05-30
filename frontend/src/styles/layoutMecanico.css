@@ -1,0 +1,232 @@
+/* RESET GLOBAL PARA ELIMINAR A MARGEM BRANCA DO NAVEGADOR */
+html, body {
+  margin: 0 !important;
+  padding: 0 !important;
+  background-color: #121212 !important;
+  color: #fff;
+  min-height: 100vh;
+}
+
+.pagina-mecanico {
+  background: #121212;
+  min-height: 100vh;
+  padding: 40px 20px;
+  color: #fff;
+  font-family: Arial, sans-serif;
+}
+
+.container-mecanico {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.tabela-container {
+  background: #1f2228;
+  padding: 20px;
+  border-radius: 12px;
+  border: 1px solid #2f323a;
+}
+
+.titulo {
+  margin-bottom: 20px;
+  font-size: 22px;
+  font-weight: bold;
+}
+
+.tabela {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.tabela th {
+  background: #1e1e1e;
+  padding: 10px;
+  text-align: left;
+}
+
+.tabela td {
+  padding: 10px;
+  border-bottom: 1px solid #2b2f38;
+}
+
+.acoes {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.btn {
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-weight: bold;
+  border: none;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+/* CORES ORIGINAIS PADRONIZADAS NAS AVS */
+.btn.editar {
+  background: #64b5f6;
+  color: #000;
+}
+
+.btn.emprestar {
+  background: #00e676;
+  color: #000;
+}
+
+.btn.reservar {
+  background: #2962ff;
+  color: #fff;
+}
+
+.btn.devolver {
+  background: #ffc400;
+  color: #000;
+}
+
+.card-form-mecanico {
+  background: #1f2228;
+  padding: 24px 24px 28px;
+  border-radius: 12px;
+  border: 1px solid #2f323a;
+  max-width: 480px;
+}
+
+.titulo-form-mecanico {
+  font-size: 22px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.grupo-campo-mecanico {
+  margin-bottom: 16px;
+  display: flex;
+  flex-direction: column;
+}
+
+.grupo-campo-mecanico label {
+  margin-bottom: 4px;
+}
+
+.input-mecanico {
+  background: #121212;
+  border: 1px solid #2f323a;
+  padding: 10px 12px;
+  border-radius: 6px;
+  color: #fff;
+  font-size: 14px;
+}
+
+.input-mecanico:focus {
+  outline: none;
+  border-color: #ffc400;
+}
+
+/* EXIBIÇÃO DO ÍCONE DE CALENDÁRIO EM AMBIENTES ESCUROS */
+::-webkit-calendar-picker-indicator {
+  filter: invert(1);
+  cursor: pointer;
+}
+
+.btn-primario-mecanico {
+  background: #ffc400;
+  color: #000;
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-weight: bold;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+/* AUXILIAR DE ALINHAMENTO PARA STATUS */
+.status-container {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* RESPONSIVIDADE MOBILE CORRIGIDA */
+@media (max-width: 768px) {
+  .pagina-mecanico {
+    padding: 15px 10px;
+  }
+
+  .tabela-container {
+    padding: 10px;
+  }
+
+  .tabela thead {
+    display: none;
+  }
+
+  .tabela, .tabela tbody, .tabela tr, .tabela td {
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .tabela tr {
+    margin-bottom: 15px;
+    background-color: #1f2228;
+    border-radius: 8px;
+    padding: 10px;
+    border: 1px solid #2f323a;
+  }
+
+  .tabela td {
+    text-align: right;
+    padding-left: 45% !important;
+    position: relative;
+    border-bottom: 1px solid #2b2f38;
+    padding-top: 12px;
+    padding-bottom: 12px;
+    min-height: 40px;
+  }
+
+  .tabela td:last-child {
+    border-bottom: none;
+  }
+
+  .tabela td::before {
+    content: attr(data-label);
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 40%;
+    text-align: left;
+    font-weight: bold;
+    color: #ffc400;
+    font-size: 12px;
+    text-transform: uppercase;
+  }
+
+  .tabela td.celula-acoes {
+    padding-left: 12px !important;
+    padding-top: 35px !important;
+    text-align: left;
+  }
+
+  .tabela td.celula-acoes::before {
+    top: 15px;
+    transform: none;
+    width: 100%;
+  }
+
+  .acoes {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 8px;
+  }
+
+  .btn {
+    width: 100%;
+    padding: 10px;
+    font-size: 13px;
+    text-align: center;
+  }
+}

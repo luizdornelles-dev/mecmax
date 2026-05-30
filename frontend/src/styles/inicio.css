@@ -1,0 +1,78 @@
+.inicio-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background-color: #121212;
+  color: #fff;
+  font-family: Arial, sans-serif;
+}
+
+.inicio-cabecalho {
+  margin-bottom: 60px;
+  text-align: center;
+}
+
+.inicio-cabecalho h1 {
+  font-size: 3rem;
+  margin: 0;
+  color: #ffc400; 
+  letter-spacing: 2px;
+}
+
+.inicio-cabecalho p {
+  color: #aaa;
+  font-size: 1.2rem;
+  margin-top: 10px;
+}
+
+.cards-wrapper {
+  display: flex;
+  gap: 30px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.card-perfil {
+  background: #1f2228;
+  border: 1px solid #333;
+  border-radius: 16px;
+  width: 280px;
+  padding: 40px 20px;
+  text-align: center;
+  cursor: pointer;
+  transition: transform 0.2s, border-color 0.2s;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.card-perfil:hover {
+  transform: translateY(-5px);
+  border-color: #ffc400;
+  background: #252830;
+}
+
+.icone-circulo {
+  width: 80px;
+  height: 80px;
+  background-color: #2c303a;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+  font-size: 32px;
+}
+
+.card-perfil h2 {
+  margin: 0 0 10px 0;
+  font-size: 1.5rem;
+  color: #fff;
+}
+
+.card-perfil p {
+  color: #888;
+  font-size: 0.9rem;
+}
