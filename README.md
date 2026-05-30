@@ -423,7 +423,8 @@ PENDENTE: inserir aqui o link do sistema após o deploy.
 
 ### 🔗 Link do Repositório GitHub
 
-PENDENTE: inserir aqui o link do repositório após publicação no GitHub.
+(https://github.com/luizdornelles-dev/mecmax)
+
 ---
 
 ## 17. Como Testar Rapidamente
